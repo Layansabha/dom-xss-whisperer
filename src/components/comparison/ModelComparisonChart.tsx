@@ -51,8 +51,8 @@ const ModelComparisonChart = ({ className }: ModelComparisonProps) => {
     'Our Model': {
       label: 'Our AI Model',
       theme: {
-        light: '#3f87f5',
-        dark: '#3f87f5',
+        light: '#000000',
+        dark: '#000000',
       },
     },
     'XSStrike': {
@@ -72,8 +72,8 @@ const ModelComparisonChart = ({ className }: ModelComparisonProps) => {
     'OWASP ZAP': {
       label: 'OWASP ZAP',
       theme: {
-        light: '#f97316',
-        dark: '#f97316',
+        light: '#505050',
+        dark: '#505050',
       },
     },
   };
@@ -94,7 +94,7 @@ const ModelComparisonChart = ({ className }: ModelComparisonProps) => {
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={comparisonData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                 <XAxis dataKey="name" />
                 <YAxis domain={[0, 1]} tickFormatter={(value) => `${value * 100}%`} />
                 <ChartTooltip
@@ -111,10 +111,10 @@ const ModelComparisonChart = ({ className }: ModelComparisonProps) => {
                   }}
                 />
                 <Legend />
-                <Bar dataKey="Our Model" fill="var(--color-Our Model)" />
-                <Bar dataKey="XSStrike" fill="var(--color-XSStrike)" />
-                <Bar dataKey="Dalfox" fill="var(--color-Dalfox)" />
-                <Bar dataKey="OWASP ZAP" fill="var(--color-OWASP ZAP)" />
+                <Bar dataKey="Our Model" fill="var(--color-Our Model)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="XSStrike" fill="var(--color-XSStrike)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Dalfox" fill="var(--color-Dalfox)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="OWASP ZAP" fill="var(--color-OWASP ZAP)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
