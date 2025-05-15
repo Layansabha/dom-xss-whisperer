@@ -1,13 +1,13 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Shield, AlertTriangle, FileText, Clock, Users } from 'lucide-react';
+import { Search, Shield, AlertTriangle, FileText, Clock, Users, Bell, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from 'sonner';
 
 const Index = () => {
   const [url, setUrl] = useState('');
@@ -16,6 +16,13 @@ const Index = () => {
     aiDetection: true,
     realTesting: false,
     aiReport: true
+  });
+  const [notificationEmail, setNotificationEmail] = useState('');
+  const [notificationPrefs, setNotificationPrefs] = useState({
+    scanComplete: true,
+    vulnerabilityFound: true,
+    weeklyReport: false,
+    securityTips: true
   });
   const navigate = useNavigate();
 
@@ -27,7 +34,8 @@ const Index = () => {
     sessionStorage.setItem('scanConfig', JSON.stringify({
       url,
       scanType,
-      options
+      options,
+      notificationEmail
     }));
 
     // Navigate to the progress page
@@ -39,6 +47,27 @@ const Index = () => {
       ...prev,
       [option]: !prev[option]
     }));
+  };
+
+  const handleNotificationPrefChange = (pref: keyof typeof notificationPrefs) => {
+    setNotificationPrefs(prev => ({
+      ...prev,
+      [pref]: !prev[pref]
+    }));
+  };
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!notificationEmail) {
+      toast("Please enter your email address", {
+        description: "Email is required to set up notifications",
+      });
+      return;
+    }
+    
+    toast.success("Notification preferences saved", {
+      description: "You'll receive updates based on your selected preferences",
+    });
   };
 
   return (
@@ -161,6 +190,120 @@ const Index = () => {
           </form>
         </CardContent>
       </Card>
+
+      {/* Notification Email Section */}
+      <div className="mt-20">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-4">
+            <Bell className="h-6 w-6 text-primary mr-2" />
+            <span className="text-sm font-medium text-primary">Security Notifications</span>
+          </div>
+          <h2 className="text-3xl font-bold">Stay Updated on Security Issues</h2>
+          <p className="text-muted-foreground mt-2">Get timely alerts about vulnerabilities and scan results</p>
+        </div>
+        
+        <Card className="border-border/40 bg-card shadow-lg">
+          <CardContent className="p-6 md:p-8">
+            <form onSubmit={handleSubscribe} className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <Mail className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="text-xl font-medium">Your Notification Email</h3>
+                </div>
+                <Input 
+                  type="email" 
+                  placeholder="your@email.com" 
+                  className="bg-background"
+                  value={notificationEmail}
+                  onChange={(e) => setNotificationEmail(e.target.value)}
+                  required
+                />
+                <p className="text-xs text-muted-foreground">We respect your privacy and will never share your email</p>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-xl font-medium">Notification Preferences</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-start space-x-3">
+                    <Checkbox 
+                      id="scan-complete" 
+                      checked={notificationPrefs.scanComplete}
+                      onCheckedChange={() => handleNotificationPrefChange('scanComplete')}
+                    />
+                    <div className="space-y-1">
+                      <Label 
+                        htmlFor="scan-complete" 
+                        className="text-base font-medium cursor-pointer"
+                      >
+                        Scan Complete
+                      </Label>
+                      <p className="text-sm text-muted-foreground">Get notified when your scan is finished</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <Checkbox 
+                      id="vulnerability-found" 
+                      checked={notificationPrefs.vulnerabilityFound}
+                      onCheckedChange={() => handleNotificationPrefChange('vulnerabilityFound')}
+                    />
+                    <div className="space-y-1">
+                      <Label 
+                        htmlFor="vulnerability-found" 
+                        className="text-base font-medium cursor-pointer"
+                      >
+                        Vulnerability Alerts
+                      </Label>
+                      <p className="text-sm text-muted-foreground">Immediate alerts when issues are found</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <Checkbox 
+                      id="weekly-report" 
+                      checked={notificationPrefs.weeklyReport}
+                      onCheckedChange={() => handleNotificationPrefChange('weeklyReport')}
+                    />
+                    <div className="space-y-1">
+                      <Label 
+                        htmlFor="weekly-report" 
+                        className="text-base font-medium cursor-pointer"
+                      >
+                        Weekly Security Report
+                      </Label>
+                      <p className="text-sm text-muted-foreground">Get weekly summaries of your security status</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <Checkbox 
+                      id="security-tips" 
+                      checked={notificationPrefs.securityTips}
+                      onCheckedChange={() => handleNotificationPrefChange('securityTips')}
+                    />
+                    <div className="space-y-1">
+                      <Label 
+                        htmlFor="security-tips" 
+                        className="text-base font-medium cursor-pointer"
+                      >
+                        Security Tips & News
+                      </Label>
+                      <p className="text-sm text-muted-foreground">Latest security best practices and news</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <Button 
+                type="submit" 
+                className="w-full py-6 text-lg bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
+              >
+                Save Notification Preferences
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Features Section */}
       <div className="mt-20">
