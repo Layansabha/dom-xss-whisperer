@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   Download, FileText, Check, X, AlertTriangle, ChevronDown, ChevronUp
@@ -9,6 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import XssExplainer from '@/components/educational/XssExplainer';
+import ModelComparisonChart from '@/components/comparison/ModelComparisonChart';
+import LiveScanLog from '@/components/logs/LiveScanLog';
 
 interface ScanResult {
   url: string;
@@ -129,6 +131,21 @@ const Results = () => {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* Educational Section */}
+      <div className="mb-10">
+        <XssExplainer />
+      </div>
+
+      {/* Model Comparison Chart */}
+      <div className="mb-10">
+        <ModelComparisonChart />
+      </div>
+
+      {/* Live Scan Log */}
+      <div className="mb-10">
+        <LiveScanLog />
       </div>
 
       <div className="flex justify-between items-center mb-6">
