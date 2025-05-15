@@ -1,12 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, Bell, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Logo from '../common/Logo';
+import { Command, CommandInput } from '@/components/ui/command';
 
 const Header = () => {
   const location = useLocation();
+  const [searchOpen, setSearchOpen] = useState(false);
   
   const isActive = (path: string) => {
     return location.pathname === path 
@@ -38,9 +40,27 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="icon" className="text-white/80 hover:text-white">
-            <Search className="h-5 w-5" />
-          </Button>
+          {searchOpen ? (
+            <div className="relative">
+              <Command className="rounded-lg border border-primary/20 shadow-md bg-secondary/95">
+                <CommandInput 
+                  placeholder="Search vulnerabilities..." 
+                  className="h-9 text-sm text-white" 
+                  onBlur={() => setSearchOpen(false)}
+                  autoFocus
+                />
+              </Command>
+            </div>
+          ) : (
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="text-white/80 hover:text-white border-primary/20 hover:border-primary hover:bg-primary/10"
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+          )}
           <Button variant="ghost" size="icon" className="text-white/80 hover:text-white">
             <Bell className="h-5 w-5" />
           </Button>
