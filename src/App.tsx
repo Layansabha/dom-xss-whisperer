@@ -10,6 +10,8 @@ import Results from "./pages/Results";
 import History from "./pages/History";
 import Chat from "./pages/Chat";
 import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
 import SignOut from "./pages/SignOut";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./components/Layout/MainLayout";
@@ -31,6 +33,8 @@ const App = () => (
               <Route path="history" element={<History />} />
               <Route path="chat" element={<Chat />} />
               <Route path="signin" element={<SignIn />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="signout" element={<SignOut />} />
             </Route>
             <Route path="*" element={<NotFound />} />

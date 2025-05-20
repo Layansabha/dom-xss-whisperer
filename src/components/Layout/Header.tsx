@@ -115,7 +115,7 @@ const Header = () => {
                 toast.info("New scan feature requires authentication", {
                   description: "Please sign in to start a new scan"
                 });
-                navigate('/signin');
+                navigate('/signup');
               }}
             >
               New Scan
